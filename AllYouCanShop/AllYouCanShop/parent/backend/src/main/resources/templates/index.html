@@ -1,15 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://thymeleaf.org" lang="en">
 <head>
     <meta content="text/xml; charset=UTF-8" http-equiv="Content-Type"/>
     <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0" name="viewport"/>
-    <title>Home - EYW Admin</title>
-    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <title>Home - Admin Center</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 </head>
 <body>
 <div class="container-fluid">
     <div>
-        <h1>Welcome to EmptyYourWallet!</h1>
+        <h1>AllYouCanShop Control Panel</h1>
+    </div>
+
+    <div>
+        <p>AllYouCanShop Control Panel - Copyright &copy; AllYouCanShop</p>
     </div>
 </div>
 </body>
