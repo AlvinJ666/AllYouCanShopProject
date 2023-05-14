@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <head th:replace="fragments/fragments:: page_head"/>
+</head>
+<body>
+<div class="container-fluid">
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <div>
+        <h2>Manger Users</h2>
+    </div>
+    <div>
+        <table class="table full-width table-bordered table-striped table-hover table-responsive-xl">
+            <thead class="thead-dark">
+            <tr>
+                <th>
+                    User ID
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    First Name
+                </th>
+                <th>
+                    Last Name
+                </th>
+                <th>
+                    Photos
+                </th>
+                <th>
+                    Roles
+                </th>
+                <th>
+                    Enabled
+                </th>
+                <th/>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${listUsers}">
+                <td>[[${user.id}]]</td>
+                <td>[[${user.email}]]</td>
+                <td>[[${user.firstName}]]</td>
+                <td>[[${user.lastName}]]</td>
+                <td>[[${user.photos}]]</td>
+                <td>[[${user.roles}]]</td>
+                <td>[[${user.enabled}]]</td>
+                <td>
+                    <button style="border: none;background-color: transparent; ">
+                        Edit
+                    </button>
+                    <button style="border: none;background-color: transparent;color: red">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="text-center">
+        <p>AllYouCanShop Control Panel - Copyright &copy; AllYouCanShop</p>
+    </div>
+</div>
+</body>
+</html>
