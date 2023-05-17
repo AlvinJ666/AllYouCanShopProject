@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @DataJpaTest
@@ -82,5 +82,16 @@ public class UserRepoTest {
         users.remove(indexToDel);
         userRepository.saveAll(users);
         log.info("After modification: " + userRepository.findAll());
+    }
+
+    @Test
+    public void testGetUserByEmail() {
+        String email = "abc@abc.com";
+        User user0 = userRepository.findUserByEmail(email);
+        assertNull(user0);
+
+        email = "shipper@test.com";
+        User user1 = userRepository.findUserByEmail(email);
+        assertNotNull(user1);
     }
 }

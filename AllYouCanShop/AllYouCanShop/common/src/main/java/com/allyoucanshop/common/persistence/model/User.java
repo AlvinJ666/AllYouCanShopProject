@@ -7,7 +7,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -37,7 +36,7 @@ public class User {
     @Column
     private boolean enabled;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -61,7 +60,4 @@ public class User {
         this.roles.remove(role);
     }
 
-    public String getRoles() {
-        return this.roles.stream().map(Role::getName).collect(Collectors.joining(", "));
-    }
 }

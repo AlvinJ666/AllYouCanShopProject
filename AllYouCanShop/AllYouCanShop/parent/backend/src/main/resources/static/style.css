@@ -1,0 +1,27 @@
+*.icon-white {
+    color: white
+}
+
+*.icon-silver {
+    color: silver
+}
+
+*.icon-green {
+    color: green
+}
+
+*.icon-dark {
+    color: grey
+}
+
+*.icon-green-hover:hover {
+    color: green
+}
+
+*.icon-red-hover:hover {
+    color: red
+}
+
+*.icon-deepskyblue-hover:hover {
+    color: deepskyblue
+}

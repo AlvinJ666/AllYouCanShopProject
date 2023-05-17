@@ -23,4 +23,13 @@ public class Role {
 
     @Column(length = 256, nullable = false, columnDefinition = " varchar(256)")
     private String description;
+
+    public Role(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public String toString() {
+        return this.name;
+    }
 }
