@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,10 +25,10 @@ public class User {
     @Column(length = 64, nullable = false, unique = true, columnDefinition = " varchar(64)")
     private String password;
 
-    @Column(length = 64, nullable = false, unique = true, columnDefinition = " varchar(64)")
+    @Column(length = 64, nullable = false, columnDefinition = " varchar(64)")
     private String firstName;
 
-    @Column(length = 64, nullable = false, unique = true, columnDefinition = " varchar(64)")
+    @Column(length = 64, nullable = false, columnDefinition = " varchar(64)")
     private String lastName;
 
     @Column(length = 64)
@@ -60,4 +61,12 @@ public class User {
         this.roles.remove(role);
     }
 
+    public boolean sameUser(User user) {
+        return Comparator.comparing(User::getFirstName)
+                .thenComparing(User::getLastName)
+                .thenComparing(User::getEmail)
+                .thenComparing(User::isEnabled)
+                .thenComparing(User::getPassword)
+                .compare(this, user) == 0;
+    }
 }

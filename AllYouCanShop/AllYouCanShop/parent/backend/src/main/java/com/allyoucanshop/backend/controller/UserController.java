@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.thymeleaf.util.StringUtils;
 
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class UserController {
 
     @GetMapping(path = "/users")
     public String displayAllUsers(Model model) {
-        List<User> users = userService.listAll();
+        List<User> users = userService.getAllUsers();
         model.addAttribute("listUsers", users);
         return "users";
     }
@@ -51,12 +52,28 @@ public class UserController {
     }
 
     @PostMapping("/users/save")
-    public String saveUser(User user, RedirectAttributes redirectAttributes) {
-        log.info(user.toString());
-        User savedUser = userService.save(user);
-        setFlashMessageToRedirectAttributes(redirectAttributes, String.format("The user of ID %s has been saved successfully!", savedUser.getId()));
+    public String updateUser(User user, RedirectAttributes redirectAttributes) {
+        if (user != null) {
+            String verb = "saved";
+            Long id = user.getId();
+            if (id != null) {
+                User userInDb = userService.findUserByIdWithoutLock(id);
+                if (StringUtils.isEmpty(user.getPassword())) {
+                    user.setPassword(userInDb.getPassword());
+                }
+                if (user.sameUser(userInDb)) {
+                    setFlashErrMessageToRedirectAttributes(redirectAttributes, String.format("Nothing to update, user of ID %s remains the same", id));
+                    return "redirect:/users";
+                }
+                verb = "updated";
+            }
+            User savedUser = userService.save(user);
+            if (savedUser != null)
+                setFlashMessageToRedirectAttributes(redirectAttributes, String.format("The user of ID %s has been %s successfully!", savedUser.getId(), verb));
+        }
         return "redirect:/users";
     }
+
 
     @GetMapping("/users/edit/{id}")
     public String editUser(@PathVariable("id") long id, Model model, RedirectAttributes redirectAttributes) {
@@ -68,6 +85,17 @@ public class UserController {
             return "user_form";
         }
         setFlashErrMessageToRedirectAttributes(redirectAttributes, String.format("User with ID: %s not exists", id));
+        return "redirect:/users";
+    }
+
+    @GetMapping("/users/delete/{id}")
+    public String removeUser(@PathVariable("id") long id, RedirectAttributes redirectAttributes) {
+        boolean succeed = userService.deleteUserById(id);
+        if (succeed) {
+            setFlashMessageToRedirectAttributes(redirectAttributes, String.format("User with ID: %s successfully removed", id));
+        } else {
+            setFlashErrMessageToRedirectAttributes(redirectAttributes, String.format("Failed to remove user with ID %s", id));
+        }
         return "redirect:/users";
     }
 

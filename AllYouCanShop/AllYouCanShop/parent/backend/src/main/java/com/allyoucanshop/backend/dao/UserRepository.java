@@ -13,4 +13,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Lock(value = LockModeType.PESSIMISTIC_WRITE)
     User findFirstById(long id);
+
+    long countAllById(long id);
 }

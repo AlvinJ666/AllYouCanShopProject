@@ -10,6 +10,7 @@
 
     <form method="post" onsubmit="return checkUserUnique(this)" style="max-width: 700px; margin: 0 auto" th:action="@{/users/save}"
           th:object="${user}">
+        <input id="id" name="id" th:field="*{id}" type="hidden"/>
         <div class="border border-secondary rounded p-3">
             <div class="form-group row">
                 <label class="col-sm-3 col-form-label">Email: </label>
@@ -22,7 +23,10 @@
                 <label class="col-sm-3 col-form-label" for="inputPassword">Password: </label>
                 <div class="col-sm-8">
                     <input class="form-control" id="inputPassword" maxlength="16" minlength="8" required
+                           th:if="${user.id==null}"
                            th:field="*{password}" type="password">
+                    <input class="form-control" id="inputPassword" maxlength="16" minlength="8" th:field="*{password}"
+                           th:if="${user.id!=null}" type="password">
                 </div>
             </div>
             <div class="form-group row">
@@ -103,12 +107,13 @@
         function checkUserUnique(form) {
             url = "[[@{/users/check_email}]]";
             userEmail = $("#email").val();
+            userId = $("#id").val();
             csrfVal = $("input[name='_csrf']").val();
-            params = {email: userEmail, _csrf: csrfVal}
+            params = {id: userId, email: userEmail, _csrf: csrfVal}
             $.post(url, params, function (response) {
-                if (response === 200) {
+                if (response === 400) {
                     showModalDialog("Warning", "User with email " + userEmail + " already exists.");
-                } else if (response === 400) {
+                } else if (response === 200) {
                     form.submit();
                 } else {
                     showModalDialog("Error", "Unknown response from server.");

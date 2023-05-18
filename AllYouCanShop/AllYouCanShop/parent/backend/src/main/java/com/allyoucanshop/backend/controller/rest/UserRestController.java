@@ -1,5 +1,6 @@
 package com.allyoucanshop.backend.controller.rest;
 
+import com.allyoucanshop.backend.enums.ActionCodes;
 import com.allyoucanshop.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -17,7 +18,13 @@ public class UserRestController {
 
 
     @PostMapping("/users/check_email")
-    public int checkDuplicateEmail(@Param("email") String email) {
-        return userService.userExists(email) ? 200 : 400;
+    public int validateUpdate(@Param("id") Long id, @Param("email") String email) {
+        if (id != null) {
+            //if id is not null, check if update is possible
+            return ActionCodes.getActionCode(userService.allowEdit(id));
+        } else {
+            //if exists, creating is not allowed
+            return ActionCodes.getActionCode(!userService.userExists(email));
+        }
     }
 }
